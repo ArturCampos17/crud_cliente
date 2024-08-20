@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="script.js" defer></script>
+
+    <title>Formulário de Cadastro</title>
+</head>
+
+<body>
+    <h1>Cadastre-se</h1>
+    <form action="/cliente" method="post" id="form">
+        <!-- Informações Pessoais -->
+        <fieldset>
+            <legend>Informações Pessoais</legend>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td style="padding: 10px; text-align: left;">
+                        <label for="nome" style="display: block; margin-bottom: 5px; margin-left: 10px;">Nome:</label>
+                    </td>
+                    <td style="padding: 10px; text-align: left;">
+                        <input type="text" id="nome" name="nome" required
+                            style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </td>
+
+                    <td style="padding: 10px; text-align: left;">
+                        <label for="sobrenome"
+                            style="display: block; margin-bottom: 5px; margin-left: 10px; margin-left: 10px;">Sobrenome:</label>
+                    </td>
+                    <td style="padding: 10px; text-align: left;">
+                        <input type="text" id="sobrenome" name="sobrenome" required
+                            style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding: 10px; text-align: left;">
+                        <label for="cpf" style="display: block; margin-bottom: 5px; margin-left: 10px;">CPF:</label>
+                    </td>
+                    <td style="padding: 10px; text-align: left;">
+                        <input type="text" id="cpf" name="cpf" required placeholder="999.999.999-99" maxlength="14"
+                            style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </td>
+                    <td style="padding: 10px; text-align: left;">
+                        <label for="telefone"
+                            style="display: block; margin-bottom: 5px; margin-left: 10px;">Telefone:</label>
+                    </td>
+                    <td style="padding: 10px; text-align: left;">
+                        <input type="tel" id="telefone" name="telefone" required placeholder="99 9 999-9999"
+                            maxlength="15"
+                            style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding: 10px; text-align: left;">
+                        <label for="data_nascimento" style="display: block; margin-bottom: 5px; margin-left: 10px;">Data
+                            de Nascimento:</label>
+                    </td>
+                    <td style="padding: 10px; text-align: left;">
+                        <input type="date" id="data_nascimento" name="data_nascimento" required
+                            style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </td>
+
+                    <td style="padding: 10px; text-align: left;">
+                        <label for="sexo" style="display: block; margin-bottom: 5px; margin-left: 10px;">Sexo:</label>
+                    </td>
+                    <td style="padding: 10px; text-align: left;">
+                        <select id="sexo" name="sexo" required
+                            style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            <option value="" disabled selected>Selecione</option>
+                            <option value="M">Masculino</option>
+                            <option value="F">Feminino</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding: 10px; text-align: left;">
+                        <label for="email" style="display: block; margin-bottom: 5px; margin-left: 10px;">Email:</label>
+                    </td>
+                    <td style="padding: 10px; text-align: left;">
+                        <input type="email" id="email" name="email" required placeholder="exemplo@gmail.com"
+                            style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </td>
+                    <td style="padding: 10px; text-align: left;">
+                        <label for="email_confirm"
+                            style="display: block; margin-bottom: 5px; margin-left: 10px;">Confirme Email:</label>
+                    </td>
+                    <td style="padding: 10px; text-align: left;">
+                        <input type="email" id="email_confirm" name="email_confirm" required
+                            placeholder="exemplo@gmail.com"
+                            style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        <div id="email-error" class="error-message">Emails não correspondem</div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="padding: 10px; text-align: left;">
+                        <label for="password"
+                            style="display: block; margin-bottom: 5px; margin-left: 10px;">Senha:</label>
+                    </td>
+                    <td style="padding: 10px; text-align: left; position: relative;">
+                        <input type="password" id="password" name="password" required
+                            style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        <i id="togglePassword" class="fas fa-eye"
+                            style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 16px;"></i>
+                    </td>
+
+                    <td style="padding: 10px; text-align: left;">
+                        <label for="password_confirm"
+                            style="display: block; margin-bottom: 5px; margin-left: 10px;">Confirme a Senha:</label>
+                    </td>
+                    <td style="padding: 10px; text-align: left; position: relative;">
+                        <input type="password" id="password_confirm" name="password_confirm" required
+                            style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                        <i id="togglePasswordConfirm" class="fas fa-eye"
+                            style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; font-size: 16px;"></i>
+                        <div id="password-error" class="error-message">Senhas não correspondem</div>
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+
+        <!-- Endereço -->
+        <fieldset>
+            <legend>Endereço</legend>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr>
+                    <td style="padding: 10px; text-align: left;">
+                        <label for="cep" style="display: block; margin-bottom: 5px; margin-left: 10px;">CEP:</label>
+                    </td>
+                    <td style="padding: 10px; text-align: left;">
+                        <input type="text" id="cep" name="cep" required placeholder="99999-999" maxlength="9"
+                            style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                            <p id="error-message" style="color: red;"></p>
+                    </td>
+
+                    <td style="padding: 10px; text-align: left;">
+                        <label for="nome_estado"
+                            style="display: block; margin-bottom: 5px; margin-left: 10px;">UF:</label>
+                    </td>
+                    <td style="padding: 10px; text-align: left;">
+                        <input type="text" id="nome_estado" name="nome_estado" required
+                            style="width: 100%; max-width: 70px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; text-align: left;">
+                        <label for="nome_cidade"
+                            style="display: block; margin-bottom: 5px; margin-left: 10px;">Cidade:</label>
+                    </td>
+                    <td style="padding: 10px; text-align: left;">
+                        <input type="text" id="nome_cidade" name="nome_cidade" required
+                            style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </td>
+
+                    <td style="padding: 10px; text-align: left;">
+                        <label for="bairro"
+                            style="display: block; margin-bottom: 5px; margin-left: 10px;">Bairro:</label>
+                    </td>
+                    <td style="padding: 10px; text-align: left;">
+                        <input type="text" id="bairro" name="bairro" required
+                            style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; text-align: left;">
+                        <label for="logradouro"
+                            style="display: block; margin-bottom: 5px; margin-left: 10px;">Logradouro:</label>
+                    </td>
+                    <td style="padding: 10px; text-align: left;">
+                        <input type="text" id="logradouro" name="logradouro" required
+                            style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </td>
+
+                    <td style="padding: 10px; text-align: left;">
+                        <label for="numero"
+                            style="display: block; margin-bottom: 5px; margin-left: 10px;">Número:</label>
+                    </td>
+                    <td style="padding: 10px; text-align: left;">
+                        <input type="text" id="numero" name="numero" required
+                            style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; text-align: left;">
+                        <label for="complemento"
+                            style="display: block; margin-bottom: 5px; margin-left: 10px;">Complemento:</label>
+                    </td>
+                    <td style="padding: 10px; text-align: left;">
+                        <input type="text" id="complemento" name="complemento"
+                            style="width: 100%; max-width: 300px; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </td>
+                </tr>
+            </table>
+        </fieldset>
+
+        <div class="form-group">
+            <button type="submit" id="submitButton"
+                style="padding: 10px 20px; font-size: 16px; border: none; border-radius: 4px; background-color: #4CAF50; color: white; cursor: pointer;">
+                Cadastrar
+            </button>
+        </div>
+    </form>
+</body>
+
+</html>
