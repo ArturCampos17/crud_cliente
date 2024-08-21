@@ -36,6 +36,9 @@ const validarCliente = (req, res, next) => {
 
     next();
 };
+///////////////////////////////////////////////////////////
+////////////////// POST / CREATE /////////////////////////
+/////////////////////////////////////////////////////////
 
 // Rota POST para criar cliente e usuário
 router.post('/', validarCliente, async (req, res) => {
@@ -111,6 +114,140 @@ router.post('/', validarCliente, async (req, res) => {
         res.status(201).json({ message: 'Cliente e Usuário criados com sucesso!', cliente, usuario });
     } catch (error) {
         console.error('Erro ao criar cliente e usuário:', error);
+        if (transaction) await transaction.rollback();
+        res.status(500).json({ error: error.message });
+    }
+});
+
+///////////////////////////////////////////////////////////
+////////////////// GET / READ ////////////////////////////
+/////////////////////////////////////////////////////////
+
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const cliente = await Cliente.findByPk(id);
+        if (!cliente) {
+            return res.status(404).json({ error: 'Cliente não encontrado.' });
+        }
+
+        const usuario = await Usuario.findOne({ where: { id_cliente: cliente.id_cliente } });
+        if (!usuario) {
+            return res.status(404).json({ error: 'Usuário não encontrado.' });
+        }
+
+        res.status(200).json({ cliente, usuario });
+    } catch (error) {
+        console.error('Erro ao ler cliente e usuário:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+///////////////////////////////////////////////////////////
+//////////////// PUT / UPDATE ////////////////////////////
+/////////////////////////////////////////////////////////
+
+router.put('/:id', validarCliente, async (req, res) => {
+    const { id } = req.params;
+    const { nome, sobrenome, email, cpf, telefone, data_nascimento, sexo, password, nome_cidade, nome_estado, cep, bairro, logradouro, numero, complemento } = req.body;
+    const cpfFormatado = removerCaracteresEspeciais(cpf);
+
+    let transaction;
+    try {
+        console.log('Iniciando transação para atualizar cliente e usuário');
+
+        // Inicia a transação
+        transaction = await sequelize.transaction();
+
+        // Verifica se o cliente existe
+        const cliente = await Cliente.findByPk(id);
+        if (!cliente) {
+            await transaction.rollback();
+            return res.status(404).json({ error: 'Cliente não encontrado.' });
+        }
+
+        // Atualiza o cliente
+        await cliente.update({
+            nome,
+            sobrenome,
+            email,
+            cpf: cpfFormatado,
+            telefone,
+            data_nascimento,
+            sexo,
+            nome_cidade,
+            nome_estado,
+            cep,
+            bairro,
+            logradouro,
+            numero,
+            complemento
+        }, { transaction });
+
+        // Atualiza o usuário
+        const usuario = await Usuario.findOne({ where: { id_cliente: cliente.id_cliente } });
+        if (!usuario) {
+            await transaction.rollback();
+            return res.status(404).json({ error: 'Usuário não encontrado.' });
+        }
+
+        if (password) {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            await usuario.update({ password: hashedPassword }, { transaction });
+        }
+
+        // Confirma a transação
+        await transaction.commit();
+
+        console.log('Cliente e usuário atualizados com sucesso');
+
+        res.status(200).json({ message: 'Cliente e Usuário atualizados com sucesso!', cliente, usuario });
+    } catch (error) {
+        console.error('Erro ao atualizar cliente e usuário:', error);
+        if (transaction) await transaction.rollback();
+        res.status(500).json({ error: error.message });
+    }
+});
+
+///////////////////////////////////////////////////////////
+////////////////////// DELETE ////////////////////////////
+/////////////////////////////////////////////////////////
+
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params;
+
+    let transaction;
+    try {
+        console.log('Iniciando transação para deletar cliente e usuário');
+
+        // Inicia a transação
+        transaction = await sequelize.transaction();
+
+        // Verifica se o cliente existe
+        const cliente = await Cliente.findByPk(id);
+        if (!cliente) {
+            await transaction.rollback();
+            return res.status(404).json({ error: 'Cliente não encontrado.' });
+        }
+
+        // Remove o usuário associado
+        const usuario = await Usuario.findOne({ where: { id_cliente: cliente.id_cliente } });
+        if (usuario) {
+            await usuario.destroy({ transaction });
+        }
+
+        // Remove o cliente
+        await cliente.destroy({ transaction });
+
+        // Confirma a transação
+        await transaction.commit();
+
+        console.log('Cliente e usuário deletados com sucesso');
+
+        res.status(200).json({ message: 'Cliente e Usuário deletados com sucesso!' });
+    } catch (error) {
+        console.error('Erro ao deletar cliente e usuário:', error);
         if (transaction) await transaction.rollback();
         res.status(500).json({ error: error.message });
     }
